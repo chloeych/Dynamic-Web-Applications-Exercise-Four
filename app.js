@@ -2,7 +2,7 @@
 const express = require('express');
 // Initiate Express to App 
 const app = express(); 
-// Set the Port
+// Set the Port - if environmental.PORT use that, otherwise use 4000;
 const port = process.env.PORT || 4000;
 // Create base route
 app.get('/', (req, res)=> res.send('Exercise Four'));
