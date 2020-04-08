@@ -9,7 +9,8 @@ const port = process.env.PORT || 4000;
 
 
 //Require Firebase
-const firebase = require('firebase/app');
+const firebase = require('firebase');
+
 // get configuration object so we can communicate with Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyB_PcWgQ9V9f1vflY-2wa_4F3VYtqS_deI",
@@ -21,11 +22,35 @@ const firebaseConfig = {
     appId: "1:990670199477:web:68c4566b23d009f7d4bcfc"
   };
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firestore Database 
+const db = firebase.firestore();
+
+
+// Create empty array
+const blogpostsArray = [];
+
+// Get Blog post - querying remote database
+const blogposts = db
+.collection('blogposts')
+.get()
+.then((querySnapshot)=>{
+    querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        // push document into array every time the query loops over existing articles
+        blogpostsArray.push(doc.data());
+    });
+})  
+.catch(function(error){
+    console.log('Error', error);
+});
+
 // Create base route
+// send JSON array as a response
 app.get('/', (req, res)=> 
-    res.send([
-        "Running in Browser"
-    ])
+    res.send(blogpostsArray)
     );
     
 // Set up app so that it runs when this file is run 
