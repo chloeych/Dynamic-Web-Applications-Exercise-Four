@@ -1,17 +1,12 @@
 // Import Express 
-const express = require('express');
-
+const express = require("express");
 // Initiate Express to App 
 const app = express(); 
 // Set the Port - if environmental.PORT use that, otherwise use 4000;
 const port = process.env.PORT || 4000;
-
-
-
-//Require Firebase
+// Require Firebase
 const firebase = require('firebase');
-
-// get configuration object so we can communicate with Firebase
+// Get configuration object so we can communicate with Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyB_PcWgQ9V9f1vflY-2wa_4F3VYtqS_deI",
     authDomain: "exercise-4-1708d.firebaseapp.com",
@@ -25,33 +20,18 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Firestore Database 
-const db = firebase.firestore();
+//Import Routes 
+const indexRoute = require("./routes/index.js"); 
+const postRoute = require("./routes/post.js"); 
+const createRoute = require("./routes/createArticles.js");
 
 
-// Create empty array
-const blogpostsArray = [];
+// Create Routes
+// Send JSON Array as response
+app.use("/", indexRoute); 
+app.use ("/post", postRoute); 
+app.use("/create", createRoute);
 
-// Get Blog post - querying remote database
-const blogposts = db
-.collection('blogposts')
-.get()
-.then((querySnapshot)=>{
-    querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        // push document into array every time the query loops over existing articles
-        blogpostsArray.push(doc.data());
-    });
-})  
-.catch(function(error){
-    console.log('Error', error);
-});
-
-// Create base route
-// send JSON array as a response
-app.get('/', (req, res)=> 
-    res.send(blogpostsArray)
-    );
     
 // Set up app so that it runs when this file is run 
 app.listen(port, () => 
