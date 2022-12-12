@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/chloeych/Dynamic-Web-Applications-Exercise-Four#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase": "^7.13.2"
   }
 }
